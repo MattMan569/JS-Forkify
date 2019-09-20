@@ -13,7 +13,7 @@ export default class Search {
         const appKey = '31f281936793cf572e8e05458969fc98';
     
         try {
-            const result = await axios(`${baseURL}/search?q=${this.query}&app_id=${appID}&app_key=${appKey}`);
+            const result = await axios(`${baseURL}/search?q=${this.query}&from=0&to=100&app_id=${appID}&app_key=${appKey}`);
             this.result = result.data.hits;
             // console.log(this.result);
         } catch (error) {
