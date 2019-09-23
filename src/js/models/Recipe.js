@@ -12,7 +12,6 @@ export default class Recipe {
         try {
             const result = await axios(`${baseURL}/search?r=${recipeURL + this.id}&app_id=${appID}&app_key=${appKey}`);
             const recipe = result.data[0];
-            console.log(recipe);
             this.title = recipe.label;
             this.author = recipe.source;
             this.image = recipe.image;
