@@ -4,6 +4,9 @@ import axios from 'axios'
 import { baseURL, recipeURL, appID, appKey } from './../config'
 
 export default class Recipe {
+    /**
+     * @param {string} id 
+     */
     constructor(id) {
         this.id = id;
     }
@@ -90,5 +93,20 @@ export default class Recipe {
             return objIng;
         });
         this.ingredients = newIngredients;
+    }
+
+    /**
+     * @param {['inc', 'dec']} type
+     */
+    updateServings(type) {
+        // Servings
+        const newServings = (type === 'dec' ? this.servings - 1 : this.servings + 1);
+
+        // Ingredients
+        this.ingredients.forEach(ing => {
+            ing.count *= newServings / this.servings;
+        });
+
+        this.servings = newServings;
     }
 }
