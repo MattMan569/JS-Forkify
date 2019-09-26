@@ -7,6 +7,7 @@ import Likes from './models/Likes';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import * as listView from './views/listView';
+import * as likesView from './views/likesView';
 import { elements, renderLoader, clearLoader } from './views/base';
 
 /**
@@ -18,6 +19,9 @@ import { elements, renderLoader, clearLoader } from './views/base';
  * - Liked recipes
  */
 const state = {};
+
+// Initial check for whether there are any liked recipes
+likesView.toggleLikeMenu((state.likes) ? state.likes.getNumLikes() : -1);
 
 // SEARCH CONTROLLER
 const controlSearch = async () => {
@@ -89,13 +93,16 @@ const controlRecipe = async () => {
     
             // Render the recipe
             clearLoader();
-            recipeView.renderRecipe(state.recipe);
+            recipeView.renderRecipe(
+                state.recipe,
+                (state.likes) ? state.likes.isLiked(id) : false);
         } catch (error) {
             console.error(error);
         }
     }
 };
 
+// TODO fix highlight on hashchange not working when clicking liked recipes
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
 // LIST CONTROLLER
@@ -121,24 +128,26 @@ const controlLikes = () => {
             currentID,
             state.recipe.title,
             state.recipe.author,
-            state.recipe.img
+            state.recipe.image
         );
 
         // Toggle the like button
-        // TODO
+        likesView.toggleLikeBtn(true);
 
         // Add like to the UI list
-        // TODO
+        likesView.renderLike(newLike);
     } else {
         // Remove like from the state
         state.likes.deleteLike(currentID);
 
         // Toggle the like button
-        // TODO
+        likesView.toggleLikeBtn(false);
 
         // Remove like from the UI list
-        // TODO
+        likesView.deleteLike(currentID);
     }
+
+    likesView.toggleLikeMenu(state.likes.getNumLikes());
 }
 
 // Handle delete and update list item events
