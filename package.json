@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "fracty": "^1.0.8",
     "jquery": "^3.4.1",
     "uniqid": "^5.0.3"
